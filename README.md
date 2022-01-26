@@ -1,70 +1,86 @@
-# Getting Started with Create React App
+# 台南案 React Bootstrap Table 範例
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 安裝
 
-## Available Scripts
+```bash
+npm install react-bootstrap bootstrap@5.1.3
+```
 
-In the project directory, you can run:
+## 使用方法
+必要的檔案有 `index.js` 和 `MyTable.js`，可以裝兩個檔案直接複製到專案裡面。
 
-### `npm start`
+### index.js
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+如果原來 `index.js` 已經有其它內容，修改 `index.js` 並增加`ActiveContext`：
+```javascript
+import React, { createContext, useState } from 'react';
+import App from './App';
+import { render } from "react-dom";
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+export const ActiveContext = createContext();
 
-### `npm test`
+function ActiveProvider ({children}) {
+    const [active, setActive] = useState(1);
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+    return(
+        <ActiveContext.Provider value={{active, setActive}}>
+            {children}
+        </ActiveContext.Provider>
+    );
+}
 
-### `npm run build`
+render(
+    <ActiveProvider>
+        <App />
+    </ActiveProvider>,
+    document.getElementById("root")
+);
+```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### MyTable.js
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+Table 的格式調整可以參考 `<Table></Table>` 區塊的寫法，表格的標籤名稱可以在 `<thead></thead>` 區塊裡修改：
+```javascript
+<Table striped bordered hover>
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Name</th>
+            <th>Age</th>
+        </tr>
+    </thead>
+    <tbody>
+        <MakePartTable />
+    </tbody>
+</Table>
+```
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+資料的格式可以在 `MyTable` > `makeTableContent()` 這個 function 裡修改，要和輸入欄位一致，當然同時也要對應調整上面的標籤名稱：
+```javascript
+function makeTableContent(value, index) {
+        return (
+            <tr key={index}>
+                <td>{value.id}</td>
+                <td>{value.name}</td>
+                <td>{value.age}</td>
+            </tr>
+        );
+    }
+```
+> 示範的資料只有 id， name 和 age 三種欄位
 
-### `npm run eject`
+### 範例 app.js
+要使用這個 component 要先載入：
+```javascript
+// 記得載入 bootstrap css
+import 'bootstrap/dist/css/bootstrap.min.css';
+// 主要的 component
+import MyTable from './MyTable';
+```
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+基本上 `<MyTable></MyTable>` 只有 `tableData` 和 `sizePerPage` 兩個參數。`tableData` 放輸入資料 (js object 陣列)，`sizePerPage` 則是規定一頁要輸出幾筆資料：
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+```javascript
+<MyTable tableData={data} sizePerPage={10}></MyTable>
+```
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
-
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
-
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
-
-### Code Splitting
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
-
-### Analyzing the Bundle Size
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
-
-### Making a Progressive Web App
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
-
-### Advanced Configuration
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
-
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)

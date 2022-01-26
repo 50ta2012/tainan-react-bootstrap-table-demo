@@ -1,17 +1,22 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
+import React, { createContext, useState } from 'react';
 import App from './App';
-import reportWebVitals from './reportWebVitals';
+import { render } from "react-dom";
 
-ReactDOM.render(
-  <React.StrictMode>
-    <App />
-  </React.StrictMode>,
-  document.getElementById('root')
+export const ActiveContext = createContext();
+
+function ActiveProvider ({children}) {
+    const [active, setActive] = useState(1);
+
+    return(
+        <ActiveContext.Provider value={{active, setActive}}>
+            {children}
+        </ActiveContext.Provider>
+    );
+}
+
+render(
+    <ActiveProvider>
+        <App />
+    </ActiveProvider>,
+    document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();
