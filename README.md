@@ -7,7 +7,7 @@ npm install react-bootstrap bootstrap@5.1.3
 ```
 
 ## 使用方法
-必要的檔案有 `index.js` 和 `MyTable.js`，可以裝兩個檔案直接複製到專案裡面。
+必要的檔案有 `index.js` 和 `MyTable.js`，可以將兩個檔案直接複製到專案裡面。
 
 ### index.js
 
